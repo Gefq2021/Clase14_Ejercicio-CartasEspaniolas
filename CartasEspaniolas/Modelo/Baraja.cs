@@ -8,8 +8,8 @@ namespace CartasEspaniolas.Modelo
 {
     internal class Baraja
     {
-        public List<int> Mazo { get; set; }
-        public List<int> Monton { get; set; }
+        public List<string> Mazo { get; set; }
+        public List<string> Monton { get; set; }
 
         public Baraja()
         {
@@ -18,13 +18,19 @@ namespace CartasEspaniolas.Modelo
             // del 11 - 20 son las de COPA = ♥.
             // del 21 - 30 son las de ESPADAS = ♠.
             // del 31 - 40 son las de PALO = ♣.
-            Mazo = new List<int>();
-            for (int i = 1; i <= 40; i++)
+            string palo = "♦♥♠♣";
+            Mazo = new List<string>();
+            for (int i = 0; i < palo.Length; i++)
             {
-                Mazo.Add(i);
+
+                for (int j = 1; j <= 12; j++)
+                {
+                    if (j != 8 && j != 9)
+                        Mazo.Add($"{j:00}_{palo[i]}");
+                }
             }
 
-            Monton = new List<int>();
+            Monton = new List<string>();
         }
 
 
@@ -38,7 +44,7 @@ namespace CartasEspaniolas.Modelo
                 for (int i = 0; i < Mazo.Count(); i++)
                 {
                     int j = rand.Next(0, Mazo.Count());
-                    int aux = Mazo[i];
+                    string aux = Mazo[i];
                     Mazo[i] = Mazo[j];
                     Mazo[j] = aux;
                 }
@@ -54,7 +60,7 @@ namespace CartasEspaniolas.Modelo
         public void SiguienteCarta()
         {
             if (Mazo.Count() != 0) // Comporbamos que la baraja tenga almenos una carta
-                Console.WriteLine($"\nSiguiente Carta {Naipe(Mazo[Mazo.Count() - 1])}\n");
+                Console.WriteLine($"\nSiguiente Carta {Mazo[Mazo.Count() - 1]}\n");
             else
                 Console.WriteLine("\nNo hay más cartas...\n");
         }
@@ -75,7 +81,7 @@ namespace CartasEspaniolas.Modelo
             {
                 for (int i = 0; i < cantidad; i++)
                 {
-                    Console.WriteLine($"Toma el {Naipe(Mazo[cantCartas - i - 1])}");
+                    Console.WriteLine($"Toma el {Mazo[cantCartas - i - 1]}");
                     Monton.Add(Mazo[cantCartas - i - 1]);
                 }
                 RemoverCarta(cantidad);
@@ -102,7 +108,7 @@ namespace CartasEspaniolas.Modelo
             {
                 for (int i = 0; i < Monton.Count(); i++)
                 {
-                    Console.Write($"  {Naipe(Monton[i])}");
+                    Console.Write($"  {Monton[i]}");
                     if ((i + 1) % 10 == 0) Console.WriteLine();
                 }
             }
@@ -122,7 +128,7 @@ namespace CartasEspaniolas.Modelo
             {
                 for (int i = 0; i < Mazo.Count; i++)
                 {
-                    Console.Write($"  {Naipe(Mazo[i])}");
+                    Console.Write($"  {Mazo[i]}");
                     if ((i + 1) % 10 == 0) Console.WriteLine();
                 }
             }
@@ -130,23 +136,6 @@ namespace CartasEspaniolas.Modelo
                 Console.WriteLine("No hay cartas para Mostrar...");
 
             Console.WriteLine();
-        }
-
-
-        // del 01 - 10 son las de ORO = ♦.
-        // del 11 - 20 son las de COPA = ♥.
-        // del 21 - 30 son las de ESPADAS = ♠.
-        // del 31 - 40 son las de PALO = ♣.
-        public string Naipe(int carta)
-        {
-            if (carta >= 1 && carta <= 10)
-                return ($"{(carta % 10):00}_♦");
-            else if (carta >= 11 && carta <= 20)
-                return ($"{(carta % 10):00}_♥");
-            else if (carta >= 21 && carta <= 30)
-                return ($"{(carta % 10):00}_♠");
-            else
-                return ($"{(carta % 10):00}_♣");
         }
     }
 }
